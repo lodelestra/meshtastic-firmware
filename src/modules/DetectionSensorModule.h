@@ -7,6 +7,7 @@ class DetectionSensorModule : public SinglePortModule, private concurrency::OSTh
     DetectionSensorModule() : SinglePortModule("detection", meshtastic_PortNum_DETECTION_SENSOR_APP), OSThread("DetectionSensor")
     {
     }
+    void sendAlertMessage(NodeNum dest, bool wantReplies = false, uint8_t channel = 0);
 
   protected:
     virtual int32_t runOnce() override;

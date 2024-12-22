@@ -16,6 +16,7 @@
 #include "meshUtils.h"
 #include "modules/NodeInfoModule.h"
 #include "modules/PositionModule.h"
+#include "modules/DetectionSensorModule.h"
 #include "power.h"
 #include <assert.h>
 #include <string>
@@ -268,6 +269,21 @@ bool MeshService::trySendPosition(NodeNum dest, bool wantReplies)
             nodeInfoModule->sendOurNodeInfo(dest, wantReplies, node->channel);
         }
     }
+    return false;
+}
+bool MeshService::trySendAlert(NodeNum dest, bool wantReplies)
+{
+    LOG_INFO("service try send alert ");
+    meshtastic_NodeInfoLite *node = nodeDB->getMeshNode(nodeDB->getNodeNum());
+
+    assert(node);
+    LOG_INFO("node ok");
+    if(detectionSensorModule) {
+        LOG_INFO("detection sensor module ok");
+        detectionSensorModule->sendAlertMessage(dest, wantReplies, node->channel);
+        return true;
+    }
+    LOG_INFO("detection sensor module not found ");
     return false;
 }
 

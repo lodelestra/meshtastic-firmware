@@ -126,7 +126,7 @@ class MeshService
     /// sends our nodeinfo
     /// returns true if we sent a position
     bool trySendPosition(NodeNum dest, bool wantReplies = false);
-
+    bool trySendAlert(NodeNum dest, bool wantReplies = false);
     /// Send a packet into the mesh - note p must have been allocated from packetPool.  We will return it to that pool after
     /// sending. This is the ONLY function you should use for sending messages into the mesh, because it also updates the nodedb
     /// cache
