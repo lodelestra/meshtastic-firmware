@@ -139,6 +139,27 @@ void DetectionSensorModule::sendDetectionMessage()
     delete[] message;
 }
 
+void DetectionSensorModule::sendAlertMessage(NodeNum dest, bool wantReplies, uint8_t channel)
+{
+    LOG_DEBUG("Send Alert message");
+    char *message = new char[40];
+    sprintf(message, "\a alert");
+    meshtastic_MeshPacket *p = allocDataPacket();
+    p->to = dest;
+    p->channel = channel;
+    p->want_ack = false;
+    p->decoded.payload.size = strlen(message);
+    memcpy(p->decoded.payload.bytes, message, p->decoded.payload.size);
+
+    lastSentToMesh = millis();
+    // if (!channels.isDefaultChannel(0)) {
+    //     LOG_INFO("Send message id=%d, dest=%x, msg=%.*s", p->id, p->to, p->decoded.payload.size, p->decoded.payload.bytes);
+        service->sendToMesh(p);
+    // } else
+    //     LOG_ERROR("Message not allow on Public channel");
+    delete[] message;
+}
+
 void DetectionSensorModule::sendCurrentStateMessage(bool state)
 {
     char *message = new char[40];

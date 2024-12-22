@@ -178,8 +178,12 @@ int32_t ButtonThread::runOnce()
 #if HAS_GPS
             // 3 clicks: toggle GPS
             case 3:
+                LOG_INFO("3 clicks");
                 if (!config.device.disable_triple_click && (gps != nullptr)) {
-                    gps->toggleGpsMode();
+                    LOG_INFO("3 clicks enabled");
+                    // gps->toggleGpsMode();
+                    auto sentAlert = service->trySendAlert(NODENUM_BROADCAST, true);
+                    
                     if (screen)
                         screen->forceDisplay(true); // Force a new UI frame, then force an EInk update
                 }
